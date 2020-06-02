@@ -1,0 +1,6 @@
+.idea
+.idea/*
+**/.DS_Store
+*.iml
+data.csv
+bin/*
