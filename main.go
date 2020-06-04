@@ -17,6 +17,7 @@ var (
 
 	// Input configuration arguments
 	keyPattern = kingpin.Flag("key-pattern", "Regex pattern to find keys").Default("*").String()
+	sampleTest = kingpin.Flag("test", "Fetch only one batch for testing pull").Bool()
 
 	// Output configuration arguments
 	outputFilePath = kingpin.Flag("output-file-path", "Destination file path").Short('o').Default("data.csv").String()
@@ -54,6 +55,7 @@ func loadConfiguration() *config.RedisExporterConfig {
 		},
 		Input: config.InputConfig{
 			KeyPattern: *keyPattern,
+			SampleTest: *sampleTest,
 		},
 		Output: config.OutputConfig{
 			FilePath: *outputFilePath,

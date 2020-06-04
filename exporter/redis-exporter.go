@@ -12,6 +12,9 @@ import (
 
 func GenerateCSV(redisExporterConfig *config.RedisExporterConfig) {
 	client := initRedis(redisExporterConfig.GetRedisConfig())
+	if redisExporterConfig.Input.SampleTest {
+		runSampleTest(client, redisExporterConfig)
+	}
 
 	i := func(ctx context.Context, c *redis.Client) error {
 		iter := c.Scan(c.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Redis.BatchLimit).Iterator()
@@ -87,4 +90,15 @@ func writeToFile(redisExporterConfig *config.RedisExporterConfig, data [][]strin
 		os.Exit(1)
 	}
 	fmt.Printf("Exported data to: %s\n", redisExporterConfig.GetOutputFilePath())
+}
+
+func runSampleTest(client *redis.ClusterClient, redisExporterConfig *config.RedisExporterConfig) {
+	keys, _ := client.Scan(client.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Redis.BatchLimit).Val()
+	var values [][]string
+	for _, key := range keys {
+		value := client.SMembers(client.Context(), key).Val()
+		values = append(values, buildOutputFormat(key, value, redisExporterConfig.Output))
+	}
+	writeToFile(redisExporterConfig, values)
+	os.Exit(0)
 }

@@ -17,6 +17,7 @@ type RedisConfig struct {
 
 type InputConfig struct {
 	KeyPattern string
+	SampleTest bool
 }
 
 type OutputConfig struct {
