@@ -51,11 +51,11 @@ func loadConfiguration() *config.RedisExporterConfig {
 			HostName: *hostName,
 			Port: *port,
 			Password: *password,
-			BatchLimit: *batchLimit,
 		},
 		Input: config.InputConfig{
 			KeyPattern: *keyPattern,
 			SampleTest: *sampleTest,
+			BatchLimit: *batchLimit,
 		},
 		Output: config.OutputConfig{
 			FilePath: *outputFilePath,

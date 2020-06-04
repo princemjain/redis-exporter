@@ -17,7 +17,7 @@ func GenerateCSV(redisExporterConfig *config.RedisExporterConfig) {
 	}
 
 	i := func(ctx context.Context, c *redis.Client) error {
-		iter := c.Scan(c.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Redis.BatchLimit).Iterator()
+		iter := c.Scan(c.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Input.BatchLimit).Iterator()
 		var values [][]string
 		for iter.Next(c.Context()) {
 			key := iter.Val()
@@ -89,11 +89,11 @@ func writeToFile(redisExporterConfig *config.RedisExporterConfig, data [][]strin
 		fmt.Printf("[File] Error(%s) while writing : %s\n", err, redisExporterConfig.GetOutputFilePath())
 		os.Exit(1)
 	}
-	fmt.Printf("Exported data to: %s\n", redisExporterConfig.GetOutputFilePath())
+	fmt.Printf("Writing data....\n")
 }
 
 func runSampleTest(client *redis.ClusterClient, redisExporterConfig *config.RedisExporterConfig) {
-	keys, _ := client.Scan(client.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Redis.BatchLimit).Val()
+	keys, _ := client.Scan(client.Context(), 0, redisExporterConfig.Input.KeyPattern, redisExporterConfig.Input.BatchLimit).Val()
 	var values [][]string
 	for _, key := range keys {
 		value := client.SMembers(client.Context(), key).Val()

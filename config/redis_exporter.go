@@ -12,12 +12,12 @@ type RedisConfig struct {
 	HostName   string
 	Port       int
 	Password   string
-	BatchLimit int64
 }
 
 type InputConfig struct {
 	KeyPattern string
 	SampleTest bool
+	BatchLimit int64
 }
 
 type OutputConfig struct {
