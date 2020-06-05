@@ -13,17 +13,17 @@ var (
 	hostName   = kingpin.Flag("hostname", "Redis master server hostname(any one)").Default("127.0.0.1").Short('h').String()
 	port       = kingpin.Flag("port", "Redis server port").Short('p').Default("6379").Int()
 	password   = kingpin.Flag("password", "Redis server password").String()
-	batchLimit = kingpin.Flag("batch-limit", "Number of records limit to fetch").Default("50").Int64()
+	batchLimit = kingpin.Flag("batch-limit", "Batch size per fetch").Default("50").Int64()
 
 	// Input configuration arguments
 	keyPattern = kingpin.Flag("key-pattern", "Regex pattern to find keys").Default("*").String()
-	sampleTest = kingpin.Flag("test", "Fetch only one batch for testing pull").Bool()
+	sampleTest = kingpin.Flag("test", "Pull once with the batch size for testing").Bool()
 
 	// Output configuration arguments
 	outputFilePath = kingpin.Flag("output-file-path", "Destination file path").Short('o').Default("data.csv").String()
-	mergeKey = kingpin.Flag("merge-key", "Add record key to output file").Bool()
-	keySplitPattern = kingpin.Flag("key-split-pattern", "Before split the key format").String()
-	valueSplitPattern = kingpin.Flag("value-split-pattern", "Before split the value format(ex: delimiter `:` )").String()
+	mergeKey = kingpin.Flag("merge-key", "Add key to output file, This will be the first element in the CSV").Bool()
+	keySplitPattern = kingpin.Flag("key-split-pattern", "Search and replace by(,) in the key").String()
+	valueSplitPattern = kingpin.Flag("value-split-pattern", "Search and replace by(,) in the value").String()
 
 	// redis-exporter configuration arguments
 	version = kingpin.Flag("version", "").Short('v') .Bool()
