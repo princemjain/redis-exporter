@@ -49,7 +49,7 @@ func buildOutputFormat(key string, values []string, outputConfig config.OutputCo
 	var data []string
 	if outputConfig.MergeKey {
 		if outputConfig.KeySplitPattern != "" {
-			keys := RegSplit(key, outputConfig.KeySplitPattern)
+			keys := splitWithoutEmptyValues(key, outputConfig.KeySplitPattern)
 			data = append(data, keys...)
 		} else {
 			data = append(data, key)
@@ -57,22 +57,23 @@ func buildOutputFormat(key string, values []string, outputConfig config.OutputCo
 	}
 
 	if outputConfig.ValueSplitPattern != "" {
-		values = RegSplit(values[0], outputConfig.ValueSplitPattern)
+		values = splitWithoutEmptyValues(values[0], outputConfig.ValueSplitPattern)
 	}
 	data = append(data, values...)
 	return data
 }
 
-func RegSplit(text string, delimiter string) []string {
-	reg := regexp.MustCompile(delimiter)
-	indexes := reg.FindAllStringIndex(text, -1)
+func splitWithoutEmptyValues(text string, delimiter string) []string {
+	var result []string
+	indexes := regexp.MustCompile(delimiter).FindAllStringIndex(text, -1)
 	lastStart := 0
-	result := make([]string, len(indexes)+1)
-	for i, element := range indexes {
-		result[i] = text[lastStart:element[0]]
+	for _, element := range indexes {
+		if text[lastStart:element[0]] != "" {
+			result = append(result, text[lastStart:element[0]])
+		}
 		lastStart = element[1]
 	}
-	result[len(indexes)] = text[lastStart:]
+	result = append(result, text[lastStart:])
 	return result
 }
 

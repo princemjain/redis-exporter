@@ -20,13 +20,13 @@ var (
 	sampleTest = kingpin.Flag("test", "Pull once with the batch size for testing").Bool()
 
 	// Output configuration arguments
-	outputFilePath = kingpin.Flag("output-file-path", "Destination file path").Short('o').Default("data.csv").String()
-	mergeKey = kingpin.Flag("merge-key", "Add key to output file, This will be the first element in the CSV").Bool()
-	keySplitPattern = kingpin.Flag("key-split-pattern", "Search and replace by(,) in the key").String()
+	outputFilePath    = kingpin.Flag("output-file-path", "Destination file path").Short('o').Default("data.csv").String()
+	mergeKey          = kingpin.Flag("merge-key", "Add key to output file, This will be the first element in the CSV").Bool()
+	keySplitPattern   = kingpin.Flag("key-split-pattern", "Search and replace by(,) in the key").String()
 	valueSplitPattern = kingpin.Flag("value-split-pattern", "Search and replace by(,) in the value").String()
 
 	// redis-exporter configuration arguments
-	version = kingpin.Flag("version", "").Short('v') .Bool()
+	version = kingpin.Flag("version", "").Short('v').Bool()
 
 	// make provides the version details for the release executable
 	versionInfo string
@@ -49,7 +49,7 @@ func loadConfiguration() *config.RedisExporterConfig {
 	redisExporterConfig := config.RedisExporterConfig{
 		Redis: config.RedisConfig{
 			HostName: *hostName,
-			Port: *port,
+			Port:     *port,
 			Password: *password,
 		},
 		Input: config.InputConfig{
@@ -58,9 +58,9 @@ func loadConfiguration() *config.RedisExporterConfig {
 			BatchLimit: *batchLimit,
 		},
 		Output: config.OutputConfig{
-			FilePath: *outputFilePath,
-			MergeKey: *mergeKey,
-			KeySplitPattern: *keySplitPattern,
+			FilePath:          *outputFilePath,
+			MergeKey:          *mergeKey,
+			KeySplitPattern:   *keySplitPattern,
 			ValueSplitPattern: *valueSplitPattern,
 		},
 	}
